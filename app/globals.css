@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #F8F8F8;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B7280;
+  --accent-red: #B91C1C;
+  --success-green: #22C55E;
+  --button-disabled: #6B7280;
+  --input-bg: #FFFFFF;
+  --input-border: #E5E7EB;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+@layer components {
+  .btn-primary {
+    @apply w-full max-w-[90%] h-14 bg-[#B91C1C] text-white font-semibold
+           text-lg rounded-full disabled:bg-[#6B7280]
+           transition-colors duration-200 active:scale-[0.98]
+           disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply w-full max-w-[90%] h-14 bg-[#6B7280] text-white font-semibold
+           text-lg rounded-full transition-colors duration-200 active:scale-[0.98];
+  }
+
+  .input-spz {
+    @apply w-full max-w-[90%] h-14 bg-white rounded-full px-6
+           text-lg text-center border border-[#E5E7EB] uppercase
+           focus:outline-none focus:ring-2 focus:ring-[#B91C1C]/20
+           placeholder:normal-case placeholder:text-[#9CA3AF];
+  }
+}
