@@ -277,17 +277,24 @@ export default function FishQuiz() {
           <div className="space-y-4">
             {currentQuestion.options.map((size, index) => {
               const isSelected = selectedAnswer === size;
+              const isDisabled = selectedAnswer !== null;
               return (
                 <button
                   key={`${currentQuestionIndex}-${size}`}
-                  onClick={() => handleAnswer(size)}
-                  disabled={selectedAnswer !== null}
+                  type="button"
+                  onClick={(e) => {
+                    e.currentTarget.blur();
+                    handleAnswer(size);
+                  }}
+                  onTouchEnd={(e) => {
+                    e.currentTarget.blur();
+                  }}
                   style={{ WebkitTapHighlightColor: 'transparent' }}
                   className={`w-full border-2 rounded-lg p-6 text-left transition-all touch-manipulation select-none ${
                     isSelected
                       ? 'bg-blue-200 border-blue-600 scale-105'
                       : 'bg-blue-50 border-blue-300 active:bg-blue-100 active:border-blue-500'
-                  } ${selectedAnswer !== null ? 'opacity-50' : ''}`}
+                  } ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
                 >
                   <span className="text-2xl font-bold text-blue-900">
                     {size} cm
