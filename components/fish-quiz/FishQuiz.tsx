@@ -15,7 +15,7 @@ interface Answer {
   isCorrect: boolean;
 }
 
-const QUIZ_TIME_SECONDS = 25 * 60; // 25 minut v sekundách
+const QUIZ_TIME_SECONDS = 15 * 60; // 15 minut v sekundách
 const MAX_ERRORS = 3; // Maximální počet chyb pro úspěch
 
 export default function FishQuiz() {
@@ -25,6 +25,7 @@ export default function FishQuiz() {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [timeRemaining, setTimeRemaining] = useState(QUIZ_TIME_SECONDS);
   const [quizFinished, setQuizFinished] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
   // Inicializace kvízu
   const startQuiz = () => {
@@ -65,6 +66,11 @@ export default function FishQuiz() {
 
   // Zpracování odpovědi
   const handleAnswer = (selectedSize: number) => {
+    // Pokud už je něco vybráno, ignoruj další kliknutí
+    if (selectedAnswer !== null) return;
+
+    setSelectedAnswer(selectedSize);
+
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = selectedSize === currentQuestion.fish.minSize;
 
@@ -78,12 +84,16 @@ export default function FishQuiz() {
     const newAnswers = [...answers, answer];
     setAnswers(newAnswers);
 
-    // Pokud je to poslední otázka, ukonči kvíz
-    if (currentQuestionIndex === questions.length - 1) {
-      finishQuiz();
-    } else {
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
+    // Po krátkém delay přejdi na další otázku nebo ukonči
+    setTimeout(() => {
+      setSelectedAnswer(null); // Resetuj výběr
+
+      if (currentQuestionIndex === questions.length - 1) {
+        finishQuiz();
+      } else {
+        setCurrentQuestionIndex(prev => prev + 1);
+      }
+    }, 300);
   };
 
   // Ukončení kvízu
@@ -132,7 +142,7 @@ export default function FishQuiz() {
                 <li>Test obsahuje {fishData.length} otázek</li>
                 <li>U každé ryby vyber správnou minimální lovnou míru ze 3 možností</li>
                 <li>Otázky se zobrazují jedna po druhé</li>
-                <li>Časový limit je 25 minut</li>
+                <li>Časový limit je 15 minut</li>
                 <li>K úspěchu potřebuješ mít maximálně 3 chyby</li>
               </ul>
             </div>
@@ -250,32 +260,67 @@ export default function FishQuiz() {
       </div>
 
       {/* Otázka */}
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-2">
+      <div key={currentQuestionIndex} className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow-xl p-4 sm:p-6">
+          {/* Obrázek ryby */}
+          <div className="mb-3 flex justify-center bg-gray-50 rounded-lg p-3">
+            <div className="w-full max-w-md aspect-[4/1] flex items-center justify-center relative">
+              <img
+                src={`/images/fish/${currentQuestion.fish.id}.png`}
+                alt={currentQuestion.fish.name}
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  // Fallback na emoji pokud obrázek neexistuje
+                  e.currentTarget.style.display = 'none';
+                  if (e.currentTarget.nextElementSibling) {
+                    (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'block';
+                  }
+                }}
+              />
+              <div className="text-5xl hidden">🐟</div>
+            </div>
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-bold text-blue-900 mb-1 text-center">
             {currentQuestion.fish.name}
           </h2>
-          <p className="text-gray-600 italic mb-6">
+          <p className="text-sm text-gray-600 italic mb-3 text-center">
             ({currentQuestion.fish.scientificName})
           </p>
 
-          <p className="text-xl mb-8 text-gray-700">
+          <p className="text-sm sm:text-base mb-4 text-gray-600 text-center">
             Jaká je minimální lovná míra této ryby v mimopstruhovém rybářském revíru?
           </p>
 
           {/* Možnosti */}
-          <div className="space-y-4">
-            {currentQuestion.options.map((size, index) => (
-              <button
-                key={`${currentQuestionIndex}-${size}`}
-                onClick={() => handleAnswer(size)}
-                className="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-300 hover:border-blue-500 rounded-lg p-6 text-left transition-all transform hover:scale-105 active:scale-100"
-              >
-                <span className="text-2xl font-bold text-blue-900">
-                  {size} cm
-                </span>
-              </button>
-            ))}
+          <div className="space-y-3">
+            {currentQuestion.options.map((size, index) => {
+              const isSelected = selectedAnswer === size;
+              const isDisabled = selectedAnswer !== null;
+              return (
+                <button
+                  key={`${currentQuestionIndex}-${size}`}
+                  type="button"
+                  onClick={(e) => {
+                    e.currentTarget.blur();
+                    handleAnswer(size);
+                  }}
+                  onTouchEnd={(e) => {
+                    e.currentTarget.blur();
+                  }}
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                  className={`w-full border-2 rounded-lg p-4 sm:p-5 text-center transition-all touch-manipulation select-none ${
+                    isSelected
+                      ? 'bg-blue-200 border-blue-600 scale-105'
+                      : 'bg-blue-50 border-blue-300 active:bg-blue-100 active:border-blue-500'
+                  } ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
+                >
+                  <span className="text-xl sm:text-2xl font-bold text-blue-900">
+                    {size} cm
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
