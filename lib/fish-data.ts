@@ -111,7 +111,7 @@ export const fishData: Fish[] = [
   },
   {
     id: 'siven-americky',
-    name: 'síven americký',
+    name: 'siven americký',
     scientificName: 'Salvelinus fontinalis',
     minSize: 25,
     category: 'rybarskyRad'

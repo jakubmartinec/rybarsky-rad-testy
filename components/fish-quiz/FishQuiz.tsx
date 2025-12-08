@@ -15,7 +15,7 @@ interface Answer {
   isCorrect: boolean;
 }
 
-const QUIZ_TIME_SECONDS = 25 * 60; // 25 minut v sekundách
+const QUIZ_TIME_SECONDS = 15 * 60; // 15 minut v sekundách
 const MAX_ERRORS = 3; // Maximální počet chyb pro úspěch
 
 export default function FishQuiz() {
@@ -142,7 +142,7 @@ export default function FishQuiz() {
                 <li>Test obsahuje {fishData.length} otázek</li>
                 <li>U každé ryby vyber správnou minimální lovnou míru ze 3 možností</li>
                 <li>Otázky se zobrazují jedna po druhé</li>
-                <li>Časový limit je 25 minut</li>
+                <li>Časový limit je 15 minut</li>
                 <li>K úspěchu potřebuješ mít maximálně 3 chyby</li>
               </ul>
             </div>
@@ -261,20 +261,27 @@ export default function FishQuiz() {
 
       {/* Otázka */}
       <div key={currentQuestionIndex} className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-2">
+        <div className="bg-white rounded-lg shadow-xl p-4 sm:p-6">
+          {/* Obrázek ryby */}
+          <div className="mb-4 flex justify-center bg-gray-50 rounded-lg p-4">
+            <div className="w-full max-w-md aspect-[3/2] flex items-center justify-center">
+              <div className="text-6xl">🐟</div>
+            </div>
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-bold text-blue-900 mb-1 text-center">
             {currentQuestion.fish.name}
           </h2>
-          <p className="text-gray-600 italic mb-6">
+          <p className="text-sm text-gray-600 italic mb-3 text-center">
             ({currentQuestion.fish.scientificName})
           </p>
 
-          <p className="text-xl mb-8 text-gray-700">
+          <p className="text-sm sm:text-base mb-4 text-gray-600 text-center">
             Jaká je minimální lovná míra této ryby v mimopstruhovém rybářském revíru?
           </p>
 
           {/* Možnosti */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {currentQuestion.options.map((size, index) => {
               const isSelected = selectedAnswer === size;
               const isDisabled = selectedAnswer !== null;
@@ -290,13 +297,13 @@ export default function FishQuiz() {
                     e.currentTarget.blur();
                   }}
                   style={{ WebkitTapHighlightColor: 'transparent' }}
-                  className={`w-full border-2 rounded-lg p-6 text-left transition-all touch-manipulation select-none ${
+                  className={`w-full border-2 rounded-lg p-4 sm:p-5 text-center transition-all touch-manipulation select-none ${
                     isSelected
                       ? 'bg-blue-200 border-blue-600 scale-105'
                       : 'bg-blue-50 border-blue-300 active:bg-blue-100 active:border-blue-500'
                   } ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
                 >
-                  <span className="text-2xl font-bold text-blue-900">
+                  <span className="text-xl sm:text-2xl font-bold text-blue-900">
                     {size} cm
                   </span>
                 </button>

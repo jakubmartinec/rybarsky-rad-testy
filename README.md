@@ -5,7 +5,7 @@ Interaktivní testovací aplikace pro přípravu na zkoušky z rybářského ř�
 ## 🎣 Funkce
 
 - **Interaktivní kvíz** o minimálních lovných mírách 52 druhů ryb
-- **Časový limit**: 25 minut na dokončení testu
+- **Časový limit**: 15 minut na dokončení testu
 - **Hodnocení**: maximálně 3 chyby pro úspěšné složení
 - **Náhodné pořadí**: otázky i možnosti odpovědí se zamíchají
 - **Mobilní design**: optimalizováno pro použití na telefonech
