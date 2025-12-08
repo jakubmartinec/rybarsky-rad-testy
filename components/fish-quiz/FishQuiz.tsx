@@ -267,9 +267,9 @@ export default function FishQuiz() {
           <div className="space-y-4">
             {currentQuestion.options.map((size, index) => (
               <button
-                key={index}
+                key={`${currentQuestionIndex}-${size}`}
                 onClick={() => handleAnswer(size)}
-                className="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-300 hover:border-blue-500 rounded-lg p-6 text-left transition-all transform hover:scale-105"
+                className="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-300 hover:border-blue-500 rounded-lg p-6 text-left transition-all transform hover:scale-105 active:scale-100"
               >
                 <span className="text-2xl font-bold text-blue-900">
                   {size} cm
