@@ -25,6 +25,7 @@ export default function FishQuiz() {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [timeRemaining, setTimeRemaining] = useState(QUIZ_TIME_SECONDS);
   const [quizFinished, setQuizFinished] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
   // Inicializace kvízu
   const startQuiz = () => {
@@ -65,6 +66,11 @@ export default function FishQuiz() {
 
   // Zpracování odpovědi
   const handleAnswer = (selectedSize: number) => {
+    // Pokud už je něco vybráno, ignoruj další kliknutí
+    if (selectedAnswer !== null) return;
+
+    setSelectedAnswer(selectedSize);
+
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = selectedSize === currentQuestion.fish.minSize;
 
@@ -78,12 +84,16 @@ export default function FishQuiz() {
     const newAnswers = [...answers, answer];
     setAnswers(newAnswers);
 
-    // Pokud je to poslední otázka, ukonči kvíz
-    if (currentQuestionIndex === questions.length - 1) {
-      finishQuiz();
-    } else {
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
+    // Po krátkém delay přejdi na další otázku nebo ukonči
+    setTimeout(() => {
+      setSelectedAnswer(null); // Resetuj výběr
+
+      if (currentQuestionIndex === questions.length - 1) {
+        finishQuiz();
+      } else {
+        setCurrentQuestionIndex(prev => prev + 1);
+      }
+    }, 300);
   };
 
   // Ukončení kvízu
@@ -265,17 +275,25 @@ export default function FishQuiz() {
 
           {/* Možnosti */}
           <div className="space-y-4">
-            {currentQuestion.options.map((size, index) => (
-              <button
-                key={`${currentQuestionIndex}-${size}`}
-                onClick={() => handleAnswer(size)}
-                className="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-300 hover:border-blue-500 rounded-lg p-6 text-left transition-all transform hover:scale-105 active:scale-100"
-              >
-                <span className="text-2xl font-bold text-blue-900">
-                  {size} cm
-                </span>
-              </button>
-            ))}
+            {currentQuestion.options.map((size, index) => {
+              const isSelected = selectedAnswer === size;
+              return (
+                <button
+                  key={`${currentQuestionIndex}-${size}`}
+                  onClick={() => handleAnswer(size)}
+                  disabled={selectedAnswer !== null}
+                  className={`w-full border-2 rounded-lg p-6 text-left transition-all ${
+                    isSelected
+                      ? 'bg-blue-200 border-blue-600 scale-105'
+                      : 'bg-blue-50 hover:bg-blue-100 border-blue-300 hover:border-blue-500 hover:scale-105'
+                  } ${selectedAnswer !== null ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                >
+                  <span className="text-2xl font-bold text-blue-900">
+                    {size} cm
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
