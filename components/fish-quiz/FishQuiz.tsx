@@ -260,7 +260,7 @@ export default function FishQuiz() {
       </div>
 
       {/* Otázka */}
-      <div className="max-w-2xl mx-auto">
+      <div key={currentQuestionIndex} className="max-w-2xl mx-auto">
         <div className="bg-white rounded-lg shadow-xl p-8">
           <h2 className="text-2xl font-bold text-blue-900 mb-2">
             {currentQuestion.fish.name}
@@ -282,11 +282,12 @@ export default function FishQuiz() {
                   key={`${currentQuestionIndex}-${size}`}
                   onClick={() => handleAnswer(size)}
                   disabled={selectedAnswer !== null}
-                  className={`w-full border-2 rounded-lg p-6 text-left transition-all ${
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                  className={`w-full border-2 rounded-lg p-6 text-left transition-all touch-manipulation select-none ${
                     isSelected
                       ? 'bg-blue-200 border-blue-600 scale-105'
-                      : 'bg-blue-50 hover:bg-blue-100 border-blue-300 hover:border-blue-500 hover:scale-105'
-                  } ${selectedAnswer !== null ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                      : 'bg-blue-50 border-blue-300 active:bg-blue-100 active:border-blue-500'
+                  } ${selectedAnswer !== null ? 'opacity-50' : ''}`}
                 >
                   <span className="text-2xl font-bold text-blue-900">
                     {size} cm
