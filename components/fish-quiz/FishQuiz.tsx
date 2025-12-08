@@ -263,9 +263,21 @@ export default function FishQuiz() {
       <div key={currentQuestionIndex} className="max-w-2xl mx-auto">
         <div className="bg-white rounded-lg shadow-xl p-4 sm:p-6">
           {/* Obrázek ryby */}
-          <div className="mb-4 flex justify-center bg-gray-50 rounded-lg p-4">
-            <div className="w-full max-w-md aspect-[3/2] flex items-center justify-center">
-              <div className="text-6xl">🐟</div>
+          <div className="mb-3 flex justify-center bg-gray-50 rounded-lg p-3">
+            <div className="w-full max-w-md aspect-[4/1] flex items-center justify-center relative">
+              <img
+                src={`/images/fish/${currentQuestion.fish.id}.png`}
+                alt={currentQuestion.fish.name}
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  // Fallback na emoji pokud obrázek neexistuje
+                  e.currentTarget.style.display = 'none';
+                  if (e.currentTarget.nextElementSibling) {
+                    (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'block';
+                  }
+                }}
+              />
+              <div className="text-5xl hidden">🐟</div>
             </div>
           </div>
 
