@@ -263,7 +263,7 @@ export default function FishQuiz() {
       <div key={currentQuestionIndex} className="max-w-2xl mx-auto">
         <div className="bg-white rounded-lg shadow-xl p-4 sm:p-6">
           {/* Obrázek ryby */}
-          <div className="mb-3 flex justify-center bg-gray-50 rounded-lg p-3">
+          <div className="mb-3 flex justify-center bg-white rounded-lg p-3">
             <div className="w-full max-w-md aspect-[4/1] flex items-center justify-center relative">
               <img
                 src={`/images/fish/${currentQuestion.fish.id}.png`}
