@@ -127,17 +127,17 @@ export default function ProtectionQuiz() {
   // Obrazovka před startem
   if (!quizStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full">
-          <h1 className="text-3xl font-bold text-green-900 mb-6 text-center">
+          <h1 className="text-3xl font-bold text-blue-900 mb-6 text-center">
             Test: Doby hájení ryb
           </h1>
           <div className="space-y-4 text-gray-700 mb-8">
             <p className="text-lg">
               Vítej v testu o dobách hájení vybraných druhů ryb v mimopstruhovém rybářském revíru!
             </p>
-            <div className="bg-green-50 p-4 rounded-lg space-y-2">
-              <h2 className="font-bold text-green-900 mb-2">Pravidla testu:</h2>
+            <div className="bg-blue-50 p-4 rounded-lg space-y-2">
+              <h2 className="font-bold text-blue-900 mb-2">Pravidla testu:</h2>
               <ul className="list-disc list-inside space-y-1">
                 <li>Test obsahuje {protectedFishData.length} otázek</li>
                 <li>U každé ryby vyber správnou dobu hájení ze 3 možností</li>
@@ -149,7 +149,7 @@ export default function ProtectionQuiz() {
           </div>
           <button
             onClick={startQuiz}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors"
           >
             Začít test
           </button>
@@ -163,7 +163,7 @@ export default function ProtectionQuiz() {
     const results = getResults();
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full">
           <h1 className="text-3xl font-bold text-center mb-8">
             {results.passed ? (
@@ -222,7 +222,7 @@ export default function ProtectionQuiz() {
               setQuizStarted(false);
               setQuizFinished(false);
             }}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors"
           >
             Zkusit znovu
           </button>
@@ -236,7 +236,7 @@ export default function ProtectionQuiz() {
   const progress = ((currentQuestionIndex) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100 p-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 p-4">
       {/* Hlavička s časovačem a progressem */}
       <div className="max-w-2xl mx-auto mb-6">
         <div className="bg-white rounded-lg shadow-md p-4">
@@ -245,14 +245,14 @@ export default function ProtectionQuiz() {
               Otázka {currentQuestionIndex + 1} z {questions.length}
             </span>
             <span className={`font-mono text-xl font-bold ${
-              timeRemaining < 180 ? 'text-red-600' : 'text-green-600'
+              timeRemaining < 180 ? 'text-red-600' : 'text-blue-600'
             }`}>
               {formatTime(timeRemaining)}
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-green-600 h-2 rounded-full transition-all duration-300"
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -263,7 +263,7 @@ export default function ProtectionQuiz() {
       <div key={currentQuestionIndex} className="max-w-2xl mx-auto">
         <div className="bg-white rounded-lg shadow-xl p-4 sm:p-6">
           {/* Obrázek ryby */}
-          <div className="mb-3 flex justify-center bg-gray-50 rounded-lg p-3">
+          <div className="mb-3 flex justify-center bg-white rounded-lg p-3">
             <div className="w-full max-w-md aspect-[4/1] flex items-center justify-center relative">
               <img
                 src={`/images/fish/${currentQuestion.fish.id}.png`}
@@ -281,7 +281,7 @@ export default function ProtectionQuiz() {
             </div>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-bold text-green-900 mb-1 text-center">
+          <h2 className="text-xl sm:text-2xl font-bold text-blue-900 mb-1 text-center">
             {currentQuestion.fish.name}
           </h2>
           <p className="text-sm text-gray-600 italic mb-3 text-center">
@@ -311,11 +311,11 @@ export default function ProtectionQuiz() {
                   style={{ WebkitTapHighlightColor: 'transparent' }}
                   className={`w-full border-2 rounded-lg p-4 sm:p-5 text-center transition-all touch-manipulation select-none ${
                     isSelected
-                      ? 'bg-green-200 border-green-600 scale-105'
-                      : 'bg-green-50 border-green-300 active:bg-green-100 active:border-green-500'
+                      ? 'bg-blue-200 border-blue-600 scale-105'
+                      : 'bg-blue-50 border-blue-300 active:bg-blue-100 active:border-blue-500'
                   } ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
                 >
-                  <span className="text-lg sm:text-xl font-bold text-green-900">
+                  <span className="text-lg sm:text-xl font-bold text-blue-900">
                     {period}
                   </span>
                 </button>
