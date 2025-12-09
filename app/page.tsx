@@ -25,7 +25,7 @@ export default function Home() {
             className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors text-center"
           >
             <div className="text-xl mb-1">Doby hájení ryb</div>
-            <div className="text-sm font-normal opacity-90">10 minut | 11 otázek</div>
+            <div className="text-sm font-normal opacity-90">10 minut | 12 otázek</div>
           </Link>
         </div>
 

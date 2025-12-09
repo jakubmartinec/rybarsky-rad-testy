@@ -10,6 +10,9 @@ export interface ProtectedFish {
 // Konstanta pro ryby bez hájení
 export const NO_PROTECTION = 'nemá hájení';
 
+// Konstanta pro celoročně hájené ryby
+export const YEAR_ROUND_PROTECTION = 'celoročně';
+
 export const protectedFishData: ProtectedFish[] = [
   // Od 1. ledna do 15. června
   {
@@ -82,17 +85,25 @@ export const protectedFishData: ProtectedFish[] = [
     name: 'amur bílý',
     scientificName: 'Ctenopharyngodon idella',
     protectionPeriod: NO_PROTECTION
+  },
+  // Celoročně hájené ryby
+  {
+    id: 'losos-obecny',
+    name: 'losos obecný (atlantský)',
+    scientificName: 'Salmo salar',
+    protectionPeriod: YEAR_ROUND_PROTECTION
   }
 ];
 
-// Všechny unikátní doby hájení pro generování možností (včetně "nemá hájení")
+// Všechny unikátní doby hájení pro generování možností
 export const allProtectionPeriods: string[] = [
   '1. ledna – 15. června',
   '1. prosince – 15. června',
   '1. ledna – 30. září',
   '1. září – 30. listopadu',
   '1. ledna – 15. března',
-  NO_PROTECTION
+  NO_PROTECTION,
+  YEAR_ROUND_PROTECTION
 ];
 
 // Funkce pro generování 3 možností pro danou rybu
