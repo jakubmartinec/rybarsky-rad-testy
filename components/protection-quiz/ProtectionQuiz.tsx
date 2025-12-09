@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { protectedFishData, generateProtectionOptions, shuffleArray, type ProtectedFish } from '@/lib/protection-period-data';
 
 interface QuizQuestion {
@@ -217,15 +218,23 @@ export default function ProtectionQuiz() {
             )}
           </div>
 
-          <button
-            onClick={() => {
-              setQuizStarted(false);
-              setQuizFinished(false);
-            }}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors"
-          >
-            Zkusit znovu
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                setQuizStarted(false);
+                setQuizFinished(false);
+              }}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors"
+            >
+              Zkusit znovu
+            </button>
+            <Link
+              href="/"
+              className="block w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-lg text-xl transition-colors text-center"
+            >
+              Ukončit test
+            </Link>
+          </div>
         </div>
       </div>
     );
