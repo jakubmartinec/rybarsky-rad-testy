@@ -2,41 +2,41 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { fishData, generateOptions, shuffleArray, type Fish } from '@/lib/fish-data';
+import { protectedFishData, generateProtectionOptions, shuffleArray, type ProtectedFish } from '@/lib/protection-period-data';
 
 interface QuizQuestion {
-  fish: Fish;
-  options: number[];
+  fish: ProtectedFish;
+  options: string[];
 }
 
 interface Answer {
   fishId: string;
-  selectedSize: number;
-  correctSize: number;
+  selectedPeriod: string;
+  correctPeriod: string;
   isCorrect: boolean;
 }
 
-const QUIZ_TIME_SECONDS = 15 * 60; // 15 minut v sekundách
+const QUIZ_TIME_SECONDS = 10 * 60; // 10 minut v sekundách
 const MAX_ERRORS = 3; // Maximální počet chyb pro úspěch
 
-export default function FishQuiz() {
+export default function ProtectionQuiz() {
   const [quizStarted, setQuizStarted] = useState(false);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [timeRemaining, setTimeRemaining] = useState(QUIZ_TIME_SECONDS);
   const [quizFinished, setQuizFinished] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
   // Inicializace kvízu
   const startQuiz = () => {
     // Zamíchej ryby
-    const shuffledFish = shuffleArray(fishData);
+    const shuffledFish = shuffleArray(protectedFishData);
 
     // Vytvoř otázky s možnostmi
     const quizQuestions: QuizQuestion[] = shuffledFish.map(fish => ({
       fish,
-      options: shuffleArray(generateOptions(fish.minSize))
+      options: generateProtectionOptions(fish.protectionPeriod)
     }));
 
     setQuestions(quizQuestions);
@@ -66,19 +66,19 @@ export default function FishQuiz() {
   }, [quizStarted, quizFinished]);
 
   // Zpracování odpovědi
-  const handleAnswer = (selectedSize: number) => {
+  const handleAnswer = (selectedPeriod: string) => {
     // Pokud už je něco vybráno, ignoruj další kliknutí
     if (selectedAnswer !== null) return;
 
-    setSelectedAnswer(selectedSize);
+    setSelectedAnswer(selectedPeriod);
 
     const currentQuestion = questions[currentQuestionIndex];
-    const isCorrect = selectedSize === currentQuestion.fish.minSize;
+    const isCorrect = selectedPeriod === currentQuestion.fish.protectionPeriod;
 
     const answer: Answer = {
       fishId: currentQuestion.fish.id,
-      selectedSize,
-      correctSize: currentQuestion.fish.minSize,
+      selectedPeriod,
+      correctPeriod: currentQuestion.fish.protectionPeriod,
       isCorrect
     };
 
@@ -131,19 +131,19 @@ export default function FishQuiz() {
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full">
           <h1 className="text-3xl font-bold text-blue-900 mb-6 text-center">
-            Test: Minimální lovné míry ryb
+            Test: Doby hájení ryb
           </h1>
           <div className="space-y-4 text-gray-700 mb-8">
             <p className="text-lg">
-              Vítej v testu o minimálních lovných mírách vybraných druhů ryb v mimopstruhovém rybářském revíru!
+              Vítej v testu o dobách hájení vybraných druhů ryb v mimopstruhovém rybářském revíru!
             </p>
             <div className="bg-blue-50 p-4 rounded-lg space-y-2">
               <h2 className="font-bold text-blue-900 mb-2">Pravidla testu:</h2>
               <ul className="list-disc list-inside space-y-1">
-                <li>Test obsahuje {fishData.length} otázek</li>
-                <li>U každé ryby vyber správnou minimální lovnou míru ze 3 možností</li>
+                <li>Test obsahuje {protectedFishData.length} otázek</li>
+                <li>U každé ryby vyber správnou dobu hájení ze 3 možností</li>
                 <li>Otázky se zobrazují jedna po druhé</li>
-                <li>Časový limit je 15 minut</li>
+                <li>Časový limit je 10 minut</li>
                 <li>K úspěchu potřebuješ mít maximálně 3 chyby</li>
               </ul>
             </div>
@@ -168,7 +168,7 @@ export default function FishQuiz() {
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full">
           <h1 className="text-3xl font-bold text-center mb-8">
             {results.passed ? (
-              <span className="text-green-600">Gratulujeme! Test jsi úspěšně splnil! 🎉</span>
+              <span className="text-green-600">Gratulujeme! Test jsi úspěšně splnil!</span>
             ) : (
               <span className="text-red-600">Bohužel jsi test nesplnil</span>
             )}
@@ -201,14 +201,14 @@ export default function FishQuiz() {
                 <h3 className="font-bold text-red-900 mb-3">Chybné odpovědi:</h3>
                 <div className="space-y-2">
                   {answers.filter(a => !a.isCorrect).map((answer, idx) => {
-                    const fish = fishData.find(f => f.id === answer.fishId);
+                    const fish = protectedFishData.find(f => f.id === answer.fishId);
                     return (
                       <div key={idx} className="bg-white p-3 rounded border border-red-200">
                         <div className="font-semibold">{fish?.name}</div>
                         <div className="text-sm text-gray-600">
-                          <span className="text-red-600">Tvoje odpověď: {answer.selectedSize} cm</span>
+                          <span className="text-red-600">Tvoje odpověď: {answer.selectedPeriod}</span>
                           {' | '}
-                          <span className="text-green-600">Správně: {answer.correctSize} cm</span>
+                          <span className="text-green-600">Správně: {answer.correctPeriod}</span>
                         </div>
                       </div>
                     );
@@ -254,7 +254,7 @@ export default function FishQuiz() {
               Otázka {currentQuestionIndex + 1} z {questions.length}
             </span>
             <span className={`font-mono text-xl font-bold ${
-              timeRemaining < 300 ? 'text-red-600' : 'text-blue-600'
+              timeRemaining < 180 ? 'text-red-600' : 'text-blue-600'
             }`}>
               {formatTime(timeRemaining)}
             </span>
@@ -272,7 +272,7 @@ export default function FishQuiz() {
       <div key={currentQuestionIndex} className="max-w-2xl mx-auto">
         <div className="bg-white rounded-lg shadow-xl p-4 sm:p-6">
           {/* Obrázek ryby */}
-          <div className="mb-3 flex justify-center bg-gray-50 rounded-lg p-3">
+          <div className="mb-3 flex justify-center bg-white rounded-lg p-3">
             <div className="w-full max-w-md aspect-[4/1] flex items-center justify-center relative">
               <img
                 src={`/images/fish/${currentQuestion.fish.id}.png`}
@@ -298,21 +298,21 @@ export default function FishQuiz() {
           </p>
 
           <p className="text-sm sm:text-base mb-4 text-gray-600 text-center">
-            Jaká je minimální lovná míra této ryby v mimopstruhovém rybářském revíru?
+            Jaká je doba hájení této ryby v mimopstruhovém rybářském revíru?
           </p>
 
           {/* Možnosti */}
           <div className="space-y-3">
-            {currentQuestion.options.map((size, index) => {
-              const isSelected = selectedAnswer === size;
+            {currentQuestion.options.map((period, index) => {
+              const isSelected = selectedAnswer === period;
               const isDisabled = selectedAnswer !== null;
               return (
                 <button
-                  key={`${currentQuestionIndex}-${size}`}
+                  key={`${currentQuestionIndex}-${index}`}
                   type="button"
                   onClick={(e) => {
                     e.currentTarget.blur();
-                    handleAnswer(size);
+                    handleAnswer(period);
                   }}
                   onTouchEnd={(e) => {
                     e.currentTarget.blur();
@@ -324,8 +324,8 @@ export default function FishQuiz() {
                       : 'bg-blue-50 border-blue-300 active:bg-blue-100 active:border-blue-500'
                   } ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}
                 >
-                  <span className="text-xl sm:text-2xl font-bold text-blue-900">
-                    {size} cm
+                  <span className="text-lg sm:text-xl font-bold text-blue-900">
+                    {period}
                   </span>
                 </button>
               );
